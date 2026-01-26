@@ -1,0 +1,64 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "title": "Sustainable Textile Dyeing Technologies",
+            "category": "Textiles",
+            "status": "Active",
+            "description": "Development of eco-friendly dyeing processes for textile industry.",
+            "duration": "2023 - 2025"
+        },
+        {
+            "id": 2,
+            "title": "Indigenous Pharmaceutical Development",
+            "category": "Pharmaceuticals",
+            "status": "Active",
+            "description": "Research on local herbal medicines and drug formulations.",
+            "duration": "2024 - 2026"
+        },
+        {
+            "id": 3,
+            "title": "Food Safety & Quality Assurance",
+            "category": "Food Science",
+            "status": "Active",
+            "description": "Advanced testing methods for food contamination detection.",
+            "duration": "2023 - 2024"
+        },
+        {
+            "id": 4,
+            "title": "Industrial Waste Water Treatment",
+            "category": "Environment",
+            "status": "Completed",
+            "description": "Developed cost-effective solutions for industrial effluent treatment.",
+            "duration": "2020 - 2023"
+        },
+        {
+            "id": 5,
+            "title": "Mineral Processing Technologies",
+            "category": "Minerals",
+            "status": "Completed",
+            "description": "Value addition techniques for local mineral resources.",
+            "duration": "2019 - 2022"
+        }
+    ],
+    "news": [
+        {
+            "id": 1,
+            "date": "December 2024",
+            "title": "Dr. Hafiz Rub Nawaz Assumes Charge as Director, LRC, Karachi",
+            "description": "Dr. Hafiz Rub Nawaz has assumed the charge as Director, Leather Research Centre (LRC), Karachi."
+        },
+        {
+            "id": 2,
+            "date": "December 2024",
+            "title": "Dr. Razia Sultana Assumes Charge as Director General, PCSIR Laboratories Complex Karachi",
+            "description": "Dr. Razia Sultana has assumed the charge as Director General, PCSIR Laboratories Complex Karachi."
+        },
+        {
+            "id": 3,
+            "date": "December 2024",
+            "title": "Member Science at PCSIR Signs Contract Extension with SIMAP",
+            "description": "Member Science at PCSIR, formally signed the contract extension with Mr. Zeeshan Tariq, Chairman of SIMAP."
+        }
+    ]
+}
