@@ -1,0 +1,18 @@
+include:
+  - project: 'pcsir/pcsir-devops'
+    ref: 'development'
+    file: '/.common-gitlab-ci.yml'
+
+variables:
+  CONTAINER_NAME: pcsir-official-website-backend
+  CONTAINER_PORTS: "5021:5001"
+  SERVER_IP: "10.3.3.86"
+  SERVER_PORT: "3289"
+  SERVER_USER: "root"
+
+build_and_push:
+  extends: .build_template
+
+deploy:
+  extends: .deploy_template
+  
