@@ -61,14 +61,14 @@ const errorHandler = (err, req, res, next) => {
 
     // Default error response
     const statusCode = err.statusCode || 500;
-    const message = process.env.NODE_ENV === 'production'
-        ? 'An unexpected error occurred'
-        : err.message || 'Internal server error';
+    // DEBUG: Force show error details even in production to diagnose deployment issues
+    const message = err.message || 'Internal server error';
 
     res.status(statusCode).json({
         success: false,
         message,
-        ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+        stack: err.stack, // DEBUG: Always show stack
+        originalError: JSON.stringify(err) // DEBUG: Inspect raw error
     });
 };
 
