@@ -40,6 +40,7 @@ app.use(helmet({
 const allowedOrigins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://10.3.3.86:4021',
     ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
 ];
 
