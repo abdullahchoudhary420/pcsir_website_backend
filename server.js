@@ -58,6 +58,11 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
+// Root route for health check
+app.get('/', (req, res) => {
+    res.json({ success: true, message: 'API is running' });
+});
+
 // =============================================================================
 // API ROUTES
 // =============================================================================
