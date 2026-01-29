@@ -18,6 +18,6 @@ router.post('/', authenticateToken, auditMiddleware(ACTIONS.CREATE, 'publication
 router.put('/:id', authenticateToken, auditMiddleware(ACTIONS.UPDATE, 'publications'), publicationsController.updatePublication);
 
 // DELETE remove publication (Protected)
-router.delete('/:id', authenticateToken, auditMiddleware(ACTIONS.DELETE, 'publications'), publicationsController.deletePublication);
+router.delete('/:id', authenticateToken, publicationsController.deletePublication);
 
 module.exports = router;
