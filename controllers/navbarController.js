@@ -10,7 +10,12 @@ exports.getNavbarItems = async (req, res) => {
         res.json({ data: result.rows });
     } catch (error) {
         console.error('getNavbarItems error:', error);
-        res.status(500).json({ success: false, message: 'Error reading navbar items' });
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            stack: error.stack,
+            code: error.code
+        });
     }
 };
 
