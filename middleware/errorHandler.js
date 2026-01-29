@@ -68,7 +68,7 @@ const errorHandler = (err, req, res, next) => {
         success: false,
         message,
         stack: err.stack, // DEBUG: Always show stack
-        originalError: JSON.stringify(err) // DEBUG: Inspect raw error
+        errorCode: err.code // DEBUG: Show DB error code if available
     });
 };
 
