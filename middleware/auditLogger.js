@@ -69,7 +69,7 @@ const auditMiddleware = (action, tableName) => {
                     action: action,
                     tableName: tableName,
                     recordId: req.params.id || data?.id || null,
-                    oldValues: req.body._oldValues || null,
+                    oldValues: req.body?._oldValues || null,
                     newValues: req.body,
                     ipAddress: req.ip || req.connection?.remoteAddress,
                     userAgent: req.get('User-Agent')
