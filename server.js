@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+const logger = require('./config/logger');
 
 // Import routes
 const apiRoutes = require('./routes/api');
@@ -27,21 +28,17 @@ const PORT = process.env.PORT || 5001;
 // SECURITY MIDDLEWARE
 // =============================================================================
 
-// Helmet for security headers (disable contentSecurityPolicy for development)
-// Helmet for security headers (disable contentSecurityPolicy for development)
+// Helmet for security headers
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
 
-// CORS Configuration
-// CORS Configuration
+// CORS Configuration - Load origins from environment
 const allowedOrigins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://10.3.3.86:4021',
-    'http://10.10.20.27:4021',
     ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
 ];
 
@@ -60,8 +57,7 @@ app.use('/api', generalLimiter);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from public directory (for uploaded images)
-// Serve static files from public and uploads directory
+// Serve static files
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
@@ -89,7 +85,6 @@ app.use('/api/psdp-projects', require('./routes/psdpProjects'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Mixed routes (some public, some protected)
-// Mixed routes (some public, some protected)
 app.use('/api', apiRoutes);
 app.use('/api/audit-logs', require('./routes/audit'));
 
@@ -108,6 +103,7 @@ app.use(errorHandler);
 // =============================================================================
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    logger.info(`Server is running on port ${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    logger.info(`CORS Origins: ${allowedOrigins.join(', ')}`);
 });

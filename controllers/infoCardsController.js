@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // INFO CARDS CONTROLLERS - Full CRUD with pagination and search
@@ -44,7 +45,7 @@ exports.getInfoCards = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getInfoCards error:', error);
+        logger.error('getInfoCards error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading info cards' });
     }
 };
@@ -58,7 +59,7 @@ exports.addInfoCard = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addInfoCard error:', error);
+        logger.error('addInfoCard error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving info card' });
     }
 };
@@ -78,7 +79,7 @@ exports.updateInfoCard = async (req, res) => {
             res.status(404).json({ success: false, message: 'Info card not found' });
         }
     } catch (error) {
-        console.error('updateInfoCard error:', error);
+        logger.error('updateInfoCard error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating info card' });
     }
 };
@@ -94,7 +95,7 @@ exports.deleteInfoCard = async (req, res) => {
             res.status(404).json({ success: false, message: 'Info card not found' });
         }
     } catch (error) {
-        console.error('deleteInfoCard error:', error);
+        logger.error('deleteInfoCard error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting info card' });
     }
 };

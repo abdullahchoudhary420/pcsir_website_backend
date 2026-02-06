@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // STATISTICS CONTROLLERS - Full CRUD with pagination and search
@@ -44,7 +45,7 @@ exports.getStatistics = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getStatistics error:', error);
+        logger.error('getStatistics error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading statistics' });
     }
 };
@@ -58,7 +59,7 @@ exports.addStatistic = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addStatistic error:', error);
+        logger.error('addStatistic error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving statistic' });
     }
 };
@@ -78,7 +79,7 @@ exports.updateStatistic = async (req, res) => {
             res.status(404).json({ success: false, message: 'Statistic not found' });
         }
     } catch (error) {
-        console.error('updateStatistic error:', error);
+        logger.error('updateStatistic error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating statistic' });
     }
 };
@@ -94,7 +95,7 @@ exports.deleteStatistic = async (req, res) => {
             res.status(404).json({ success: false, message: 'Statistic not found' });
         }
     } catch (error) {
-        console.error('deleteStatistic error:', error);
+        logger.error('deleteStatistic error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting statistic' });
     }
 };

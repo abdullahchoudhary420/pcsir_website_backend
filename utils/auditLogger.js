@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 /**
  * Log an administrative action
@@ -22,7 +23,7 @@ exports.log = async (req, action, tableName, recordId, oldValues = null, newValu
             [userId, action, tableName, recordId, oldValues, newValues, ipAddress, userAgent]
         );
     } catch (error) {
-        console.error('Audit log error:', error);
+        logger.error('Audit log error', { error: error.message });
         // Don't block the main request flow if logging fails
     }
 };

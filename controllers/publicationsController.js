@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const auditLogger = require('../utils/auditLogger');
 
 // ============================================================================
@@ -45,7 +46,7 @@ exports.getPublications = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getPublications error:', error);
+        logger.error('getPublications error:', { error: error.message });
         res.status(500).json({ message: 'Error reading publications' });
     }
 };
@@ -68,7 +69,7 @@ exports.addPublication = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (error) {
-        console.error('addPublication error:', error);
+        logger.error('addPublication error:', { error: error.message });
         res.status(500).json({ message: 'Error saving publication' });
     }
 };
@@ -99,7 +100,7 @@ exports.updatePublication = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (error) {
-        console.error('updatePublication error:', error);
+        logger.error('updatePublication error:', { error: error.message });
         res.status(500).json({ message: 'Error updating publication' });
     }
 };
@@ -127,7 +128,7 @@ exports.deletePublication = async (req, res) => {
             res.status(404).json({ message: 'Publication not found' });
         }
     } catch (error) {
-        console.error('deletePublication error:', error);
+        logger.error('deletePublication error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting publication' });
     }
 };

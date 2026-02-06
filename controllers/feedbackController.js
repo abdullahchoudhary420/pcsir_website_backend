@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const { body, validationResult } = require('express-validator');
 
 // ============================================================================
@@ -54,7 +55,7 @@ exports.submitFeedback = async (req, res) => {
             id: result.rows[0].id
         });
     } catch (error) {
-        console.error('Error submitting feedback:', error);
+        logger.error('Error submitting feedback:', { error: error.message });
         res.status(500).json({ error: 'Failed to submit feedback' });
     }
 };
@@ -93,7 +94,7 @@ exports.getFeedbackSubmissions = async (req, res) => {
         const result = await db.query(query, params);
         res.json(result.rows || []);
     } catch (error) {
-        console.error('Error fetching feedback:', error);
+        logger.error('Error fetching feedback:', { error: error.message });
         res.status(500).json({ error: 'Failed to fetch feedback submissions' });
     }
 };
@@ -121,7 +122,7 @@ exports.updateFeedbackStatus = async (req, res) => {
 
         res.json({ message: 'Status updated successfully' });
     } catch (error) {
-        console.error('Error updating feedback status:', error);
+        logger.error('Error updating feedback status:', { error: error.message });
         res.status(500).json({ error: 'Failed to update status' });
     }
 };
@@ -141,7 +142,7 @@ exports.deleteFeedback = async (req, res) => {
 
         res.json({ message: 'Feedback deleted successfully' });
     } catch (error) {
-        console.error('Error deleting feedback:', error);
+        logger.error('Error deleting feedback:', { error: error.message });
         res.status(500).json({ error: 'Failed to delete feedback' });
     }
 };

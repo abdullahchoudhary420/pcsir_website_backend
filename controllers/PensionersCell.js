@@ -1,4 +1,5 @@
 
+const logger = require('../config/logger');
 const db = require('../config/db');
 
 exports.getPensionersCellItems = async (req, res) => {
@@ -6,7 +7,7 @@ exports.getPensionersCellItems = async (req, res) => {
         const result = await db.query('SELECT * FROM pensioners_cell_items ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching Pensioners Cell items:', error);
+        logger.error('Error fetching Pensioners Cell items:', { error: error.message });
         res.status(500).json({ message: 'Error fetching Pensioners Cell items' });
     }
 };
@@ -21,7 +22,7 @@ exports.createPensionersCellItem = async (req, res) => {
         `, [title, description, contact_person || null, contact_email || null, contact_phone || null, display_order || 0, category || 'general_info']);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating Pensioners Cell item:', error);
+        logger.error('Error creating Pensioners Cell item:', { error: error.message });
         res.status(500).json({ message: 'Error creating Pensioners Cell item' });
     }
 };
@@ -48,7 +49,7 @@ exports.updatePensionersCellItem = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating Pensioners Cell item:', error);
+        logger.error('Error updating Pensioners Cell item:', { error: error.message });
         res.status(500).json({ message: 'Error updating Pensioners Cell item' });
     }
 };
@@ -63,7 +64,7 @@ exports.deletePensionersCellItem = async (req, res) => {
         }
         res.json({ message: 'Pensioners Cell item deleted successfully' });
     } catch (error) {
-        console.error('Error deleting Pensioners Cell item:', error);
+        logger.error('Error deleting Pensioners Cell item:', { error: error.message });
         res.status(500).json({ message: 'Error deleting Pensioners Cell item' });
     }
 };

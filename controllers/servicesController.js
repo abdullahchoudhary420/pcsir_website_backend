@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // SERVICES CONTROLLERS - Full CRUD with pagination and search
@@ -44,7 +45,7 @@ exports.getServices = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getServices error:', error);
+        logger.error('getServices error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading services' });
     }
 };
@@ -58,7 +59,7 @@ exports.addService = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addService error:', error);
+        logger.error('addService error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving service' });
     }
 };
@@ -78,7 +79,7 @@ exports.updateService = async (req, res) => {
             res.status(404).json({ success: false, message: 'Service not found' });
         }
     } catch (error) {
-        console.error('updateService error:', error);
+        logger.error('updateService error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating service' });
     }
 };
@@ -94,7 +95,7 @@ exports.deleteService = async (req, res) => {
             res.status(404).json({ success: false, message: 'Service not found' });
         }
     } catch (error) {
-        console.error('deleteService error:', error);
+        logger.error('deleteService error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting service' });
     }
 };

@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 /**
  * Content Controller (Legacy)
@@ -56,7 +57,7 @@ exports.getProjects = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error('Error fetching projects:', err);
+        logger.error('fetching projects:', err);
         res.status(500).json({ success: false, message: 'Error fetching projects' });
     }
 };
@@ -71,7 +72,7 @@ exports.addProject = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
-        console.error('Error adding project:', err);
+        logger.error('adding project:', err);
         res.status(500).json({ success: false, message: 'Error adding project' });
     }
 };
@@ -92,7 +93,7 @@ exports.updateProject = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error updating project:', err);
+        logger.error('updating project:', err);
         res.status(500).json({ success: false, message: 'Error updating project' });
     }
 };
@@ -106,7 +107,7 @@ exports.deleteProject = async (req, res) => {
         }
         res.json({ success: true, message: 'Project deleted successfully' });
     } catch (err) {
-        console.error('Error deleting project:', err);
+        logger.error('deleting project:', err);
         res.status(500).json({ success: false, message: 'Error deleting project' });
     }
 };
@@ -149,7 +150,7 @@ exports.getAboutEntries = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error('Error fetching about entries:', err);
+        logger.error('fetching about entries:', err);
         res.status(500).json({ success: false, message: 'Error fetching about entries' });
     }
 };
@@ -163,7 +164,7 @@ exports.addAboutEntry = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
-        console.error('Error adding about entry:', err);
+        logger.error('adding about entry:', err);
         res.status(500).json({ success: false, message: 'Error adding about entry' });
     }
 };
@@ -181,7 +182,7 @@ exports.updateAboutEntry = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (err) {
-        console.error('Error updating about entry:', err);
+        logger.error('updating about entry:', err);
         res.status(500).json({ success: false, message: 'Error updating about entry' });
     }
 };
@@ -195,7 +196,7 @@ exports.deleteAboutEntry = async (req, res) => {
         }
         res.json({ success: true, message: 'About entry deleted successfully' });
     } catch (err) {
-        console.error('Error deleting about entry:', err);
+        logger.error('deleting about entry:', err);
         res.status(500).json({ success: false, message: 'Error deleting about entry' });
     }
 };
@@ -238,7 +239,7 @@ exports.getPublications = async (req, res) => {
             }
         });
     } catch (err) {
-        console.error('Error fetching publications:', err);
+        logger.error('fetching publications:', err);
         res.status(500).json({ success: false, message: 'Error fetching publications' });
     }
 };
@@ -252,7 +253,7 @@ exports.addPublication = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (err) {
-        console.error('Error adding publication:', err);
+        logger.error('adding publication:', err);
         res.status(500).json({ success: false, message: 'Error adding publication' });
     }
 };
@@ -266,7 +267,7 @@ exports.deletePublication = async (req, res) => {
         }
         res.json({ success: true, message: 'Publication deleted successfully' });
     } catch (err) {
-        console.error('Error deleting publication:', err);
+        logger.error('deleting publication:', err);
         res.status(500).json({ success: false, message: 'Error deleting publication' });
     }
 };

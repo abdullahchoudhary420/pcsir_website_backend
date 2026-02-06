@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const logger = require('../config/logger');
 
 // Get all PSDP projects
 const getProjects = async (req, res) => {
@@ -6,7 +7,7 @@ const getProjects = async (req, res) => {
         const result = await pool.query('SELECT * FROM psdp_projects ORDER BY id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching PSDP projects:', error);
+        logger.error('Error fetching PSDP projects:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -23,7 +24,7 @@ const createProject = async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating PSDP project:', error);
+        logger.error('Error creating PSDP project:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -45,7 +46,7 @@ const updateProject = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating PSDP project:', error);
+        logger.error('Error updating PSDP project:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -57,7 +58,7 @@ const deleteProject = async (req, res) => {
         await pool.query('DELETE FROM psdp_projects WHERE id = $1', [id]);
         res.json({ message: 'Project deleted successfully' });
     } catch (error) {
-        console.error('Error deleting PSDP project:', error);
+        logger.error('Error deleting PSDP project:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };

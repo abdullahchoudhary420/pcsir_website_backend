@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getHistory = async (req, res) => {
     try {
@@ -40,7 +41,7 @@ exports.getHistory = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getHistory error:', error);
+        logger.error('getHistory error:', { error: error.message });
         res.status(500).json({ message: 'Error reading history entries' });
     }
 };
@@ -54,7 +55,7 @@ exports.addHistoryEntry = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addHistoryEntry error:', error);
+        logger.error('addHistoryEntry error:', { error: error.message });
         res.status(500).json({ message: 'Error saving history entry' });
     }
 };
@@ -74,7 +75,7 @@ exports.updateHistoryEntry = async (req, res) => {
             res.status(404).json({ message: 'History entry not found' });
         }
     } catch (error) {
-        console.error('updateHistoryEntry error:', error);
+        logger.error('updateHistoryEntry error:', { error: error.message });
         res.status(500).json({ message: 'Error updating history entry' });
     }
 };
@@ -90,7 +91,7 @@ exports.deleteHistoryEntry = async (req, res) => {
             res.status(404).json({ message: 'History entry not found' });
         }
     } catch (error) {
-        console.error('deleteHistoryEntry error:', error);
+        logger.error('deleteHistoryEntry error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting history entry' });
     }
 };
@@ -139,7 +140,7 @@ exports.getObjectives = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getObjectives error:', error);
+        logger.error('getObjectives error:', { error: error.message });
         res.status(500).json({ message: 'Error reading objectives' });
     }
 };
@@ -153,7 +154,7 @@ exports.addObjective = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addObjective error:', error);
+        logger.error('addObjective error:', { error: error.message });
         res.status(500).json({ message: 'Error saving objective' });
     }
 };
@@ -173,7 +174,7 @@ exports.updateObjective = async (req, res) => {
             res.status(404).json({ message: 'Objective not found' });
         }
     } catch (error) {
-        console.error('updateObjective error:', error);
+        logger.error('updateObjective error:', { error: error.message });
         res.status(500).json({ message: 'Error updating objective' });
     }
 };
@@ -189,7 +190,7 @@ exports.deleteObjective = async (req, res) => {
             res.status(404).json({ message: 'Objective not found' });
         }
     } catch (error) {
-        console.error('deleteObjective error:', error);
+        logger.error('deleteObjective error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting objective' });
     }
 };
@@ -238,7 +239,7 @@ exports.getAchievements = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getAchievements error:', error);
+        logger.error('getAchievements error:', { error: error.message });
         res.status(500).json({ message: 'Error reading achievements' });
     }
 };
@@ -252,7 +253,7 @@ exports.addAchievement = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addAchievement error:', error);
+        logger.error('addAchievement error:', { error: error.message });
         res.status(500).json({ message: 'Error saving achievement' });
     }
 };
@@ -272,7 +273,7 @@ exports.updateAchievement = async (req, res) => {
             res.status(404).json({ message: 'Achievement not found' });
         }
     } catch (error) {
-        console.error('updateAchievement error:', error);
+        logger.error('updateAchievement error:', { error: error.message });
         res.status(500).json({ message: 'Error updating achievement' });
     }
 };
@@ -288,7 +289,7 @@ exports.deleteAchievement = async (req, res) => {
             res.status(404).json({ message: 'Achievement not found' });
         }
     } catch (error) {
-        console.error('deleteAchievement error:', error);
+        logger.error('deleteAchievement error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting achievement' });
     }
 };

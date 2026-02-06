@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const auditLogger = require('../utils/auditLogger');
 
 // ============================================================================
@@ -45,7 +46,7 @@ exports.getNews = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getNews error:', error);
+        logger.error('getNews error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading news' });
     }
 };
@@ -66,7 +67,7 @@ exports.addNews = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (error) {
-        console.error('addNews error:', error);
+        logger.error('addNews error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving news' });
     }
 };
@@ -96,7 +97,7 @@ exports.updateNews = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (error) {
-        console.error('updateNews error:', error);
+        logger.error('updateNews error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating news' });
     }
 };
@@ -123,7 +124,7 @@ exports.deleteNews = async (req, res) => {
             res.status(404).json({ success: false, message: 'News item not found' });
         }
     } catch (error) {
-        console.error('deleteNews error:', error);
+        logger.error('deleteNews error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting news' });
     }
 };

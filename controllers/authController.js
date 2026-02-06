@@ -2,6 +2,7 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
+const logger = require('../config/logger');
 
 /**
  * Validation rules for login
@@ -70,7 +71,7 @@ exports.login = async (req, res) => {
 
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
     } catch (error) {
-        console.error('Login error:', error);
+        logger.error('Login error', { error: error.message, stack: error.stack });
         return res.status(500).json({ success: false, message: 'Server error' });
     }
 };

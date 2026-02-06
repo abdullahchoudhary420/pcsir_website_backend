@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const fs = require('fs');
 const path = require('path');
 const auditLogger = require('../utils/auditLogger');
@@ -22,7 +23,7 @@ exports.getEvents = async (req, res) => {
         const result = await db.query(query);
         res.json(result.rows);
     } catch (err) {
-        console.error('Error fetching events:', err);
+        logger.error('fetching events:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -46,7 +47,7 @@ exports.getEventDetails = async (req, res) => {
 
         res.json(event);
     } catch (err) {
-        console.error('Error fetching event details:', err);
+        logger.error('fetching event details:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -67,7 +68,7 @@ exports.createEvent = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (err) {
-        console.error('Error creating event:', err);
+        logger.error('creating event:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -97,7 +98,7 @@ exports.updateEvent = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (err) {
-        console.error('Error updating event:', err);
+        logger.error('updating event:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -124,7 +125,7 @@ exports.deleteEvent = async (req, res) => {
 
         res.json({ message: 'Event deleted successfully' });
     } catch (err) {
-        console.error('Error deleting event:', err);
+        logger.error('deleting event:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -158,7 +159,7 @@ exports.addImages = async (req, res) => {
 
         res.status(201).json(images);
     } catch (err) {
-        console.error('Error adding images:', err);
+        logger.error('adding images:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };
@@ -182,7 +183,7 @@ exports.removeImage = async (req, res) => {
 
         res.json({ message: 'Image removed successfully' });
     } catch (err) {
-        console.error('Error removing image:', err);
+        logger.error('removing image:', err);
         res.status(500).json({ error: 'Server error' });
     }
 };

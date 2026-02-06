@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const auditLogger = require('../utils/auditLogger');
 
 // ============================================================================
@@ -45,7 +46,7 @@ exports.getUnits = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getUnits error:', error);
+        logger.error('getUnits error:', { error: error.message });
         res.status(500).json({ message: 'Error reading units' });
     }
 };
@@ -61,7 +62,7 @@ exports.getUnitById = async (req, res) => {
             res.status(404).json({ message: 'Unit not found' });
         }
     } catch (error) {
-        console.error('getUnitById error:', error);
+        logger.error('getUnitById error:', { error: error.message });
         res.status(500).json({ message: 'Error fetching unit details' });
     }
 };
@@ -81,7 +82,7 @@ exports.addUnit = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (error) {
-        console.error('addUnit error:', error);
+        logger.error('addUnit error:', { error: error.message });
         res.status(500).json({ message: 'Error saving unit' });
     }
 };
@@ -111,7 +112,7 @@ exports.updateUnit = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (error) {
-        console.error('updateUnit error:', error);
+        logger.error('updateUnit error:', { error: error.message });
         res.status(500).json({ message: 'Error updating unit' });
     }
 };
@@ -138,7 +139,7 @@ exports.deleteUnit = async (req, res) => {
             res.status(404).json({ message: 'Unit not found' });
         }
     } catch (error) {
-        console.error('deleteUnit error:', error);
+        logger.error('deleteUnit error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting unit' });
     }
 };

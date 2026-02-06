@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const auditLogger = require('../utils/auditLogger');
 
 // Get all advertisements (with optional category filter)
@@ -26,7 +27,7 @@ exports.getAdvertisements = async (req, res) => {
         const result = await db.query(query, params);
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching advertisements:', error);
+        logger.error('Error fetching advertisements:', { error: error.message });
         res.status(500).json({ message: 'Error fetching advertisements' });
     }
 };
@@ -43,7 +44,7 @@ exports.getAdvertisementById = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error fetching advertisement:', error);
+        logger.error('Error fetching advertisement:', { error: error.message });
         res.status(500).json({ message: 'Error fetching advertisement' });
     }
 };
@@ -67,7 +68,7 @@ exports.createAdvertisement = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (error) {
-        console.error('Error creating advertisement:', error);
+        logger.error('Error creating advertisement:', { error: error.message });
         res.status(500).json({ message: 'Error creating advertisement' });
     }
 };
@@ -112,7 +113,7 @@ exports.updateAdvertisement = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (error) {
-        console.error('Error updating advertisement:', error);
+        logger.error('Error updating advertisement:', { error: error.message });
         res.status(500).json({ message: 'Error updating advertisement' });
     }
 };
@@ -141,7 +142,7 @@ exports.deleteAdvertisement = async (req, res) => {
 
         res.json({ message: 'Advertisement deleted successfully' });
     } catch (error) {
-        console.error('Error deleting advertisement:', error);
+        logger.error('Error deleting advertisement:', { error: error.message });
         res.status(500).json({ message: 'Error deleting advertisement' });
     }
 };

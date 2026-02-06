@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // PUBLIC: GET FAQs
@@ -17,7 +18,7 @@ exports.getFAQs = async (req, res) => {
         );
         res.json(result.rows || []);
     } catch (error) {
-        console.error('Error fetching FAQs:', error);
+        logger.error('Error fetching FAQs:', { error: error.message });
         res.status(500).json({ error: 'Failed to fetch FAQs' });
     }
 };
@@ -36,7 +37,7 @@ exports.getAllFAQs = async (req, res) => {
         );
         res.json(result.rows || []);
     } catch (error) {
-        console.error('Error fetching all FAQs:', error);
+        logger.error('Error fetching all FAQs:', { error: error.message });
         res.status(500).json({ error: 'Failed to fetch FAQs' });
     }
 };
@@ -63,7 +64,7 @@ exports.addFAQ = async (req, res) => {
             id: result.rows[0].id
         });
     } catch (error) {
-        console.error('Error adding FAQ:', error);
+        logger.error('Error adding FAQ:', { error: error.message });
         res.status(500).json({ error: 'Failed to add FAQ' });
     }
 };
@@ -89,7 +90,7 @@ exports.updateFAQ = async (req, res) => {
 
         res.json({ message: 'FAQ updated successfully' });
     } catch (error) {
-        console.error('Error updating FAQ:', error);
+        logger.error('Error updating FAQ:', { error: error.message });
         res.status(500).json({ error: 'Failed to update FAQ' });
     }
 };
@@ -109,7 +110,7 @@ exports.deleteFAQ = async (req, res) => {
 
         res.json({ message: 'FAQ deleted successfully' });
     } catch (error) {
-        console.error('Error deleting FAQ:', error);
+        logger.error('Error deleting FAQ:', { error: error.message });
         res.status(500).json({ error: 'Failed to delete FAQ' });
     }
 };

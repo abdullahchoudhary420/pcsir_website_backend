@@ -1,11 +1,12 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getRTIItems = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM right_to_information_items ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching RTI items:', error);
+        logger.error('Error fetching RTI items:', { error: error.message });
         res.status(500).json({ message: 'Error fetching RTI items' });
     }
 };
@@ -20,7 +21,7 @@ exports.createRTIItem = async (req, res) => {
         `, [title, description, document_url || null, category || 'document', display_order || 0]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating RTI item:', error);
+        logger.error('Error creating RTI item:', { error: error.message });
         res.status(500).json({ message: 'Error creating RTI item' });
     }
 };
@@ -45,7 +46,7 @@ exports.updateRTIItem = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating RTI item:', error);
+        logger.error('Error updating RTI item:', { error: error.message });
         res.status(500).json({ message: 'Error updating RTI item' });
     }
 };
@@ -60,7 +61,7 @@ exports.deleteRTIItem = async (req, res) => {
         }
         res.json({ message: 'RTI item deleted successfully' });
     } catch (error) {
-        console.error('Error deleting RTI item:', error);
+        logger.error('Error deleting RTI item:', { error: error.message });
         res.status(500).json({ message: 'Error deleting RTI item' });
     }
 };

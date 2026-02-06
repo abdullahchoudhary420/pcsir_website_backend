@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getLogs = async (req, res) => {
     try {
@@ -45,7 +46,7 @@ exports.getLogs = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getLogs error:', error);
+        logger.error('getLogs error:', { error: error.message });
         res.status(500).json({ message: 'Error fetching audit logs' });
     }
 };

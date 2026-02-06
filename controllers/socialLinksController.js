@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // SOCIAL LINKS CONTROLLERS - Full CRUD
@@ -44,7 +45,7 @@ exports.getSocialLinks = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getSocialLinks error:', error);
+        logger.error('getSocialLinks error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading social links' });
     }
 };
@@ -58,7 +59,7 @@ exports.addSocialLink = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addSocialLink error:', error);
+        logger.error('addSocialLink error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving social link' });
     }
 };
@@ -78,7 +79,7 @@ exports.updateSocialLink = async (req, res) => {
             res.status(404).json({ success: false, message: 'Social link not found' });
         }
     } catch (error) {
-        console.error('updateSocialLink error:', error);
+        logger.error('updateSocialLink error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating social link' });
     }
 };
@@ -94,7 +95,7 @@ exports.deleteSocialLink = async (req, res) => {
             res.status(404).json({ success: false, message: 'Social link not found' });
         }
     } catch (error) {
-        console.error('deleteSocialLink error:', error);
+        logger.error('deleteSocialLink error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting social link' });
     }
 };

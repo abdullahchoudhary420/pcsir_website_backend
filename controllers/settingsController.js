@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // SITE SETTINGS CONTROLLERS
@@ -13,7 +14,7 @@ exports.getSettings = async (req, res) => {
         }, {});
         res.json(settings);
     } catch (error) {
-        console.error('getSettings error:', error);
+        logger.error('getSettings error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading settings' });
     }
 };
@@ -32,7 +33,7 @@ exports.updateSetting = async (req, res) => {
             res.status(404).json({ success: false, message: 'Setting not found' });
         }
     } catch (error) {
-        console.error('updateSetting error:', error);
+        logger.error('updateSetting error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating setting' });
     }
 };
@@ -49,7 +50,7 @@ exports.createOrUpdateSetting = async (req, res) => {
         );
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('createOrUpdateSetting error:', error);
+        logger.error('createOrUpdateSetting error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving setting' });
     }
 };

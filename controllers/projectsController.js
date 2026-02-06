@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 const auditLogger = require('../utils/auditLogger');
 
 // ============================================================================
@@ -45,7 +46,7 @@ exports.getProjects = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getProjects error:', error);
+        logger.error('getProjects error:', { error: error.message });
         res.status(500).json({ message: 'Error reading data' });
     }
 };
@@ -66,7 +67,7 @@ exports.addProject = async (req, res) => {
 
         res.status(201).json(newRecord);
     } catch (error) {
-        console.error('addProject error:', error);
+        logger.error('addProject error:', { error: error.message });
         res.status(500).json({ message: 'Error saving data' });
     }
 };
@@ -96,7 +97,7 @@ exports.updateProject = async (req, res) => {
 
         res.json(updatedRecord);
     } catch (error) {
-        console.error('updateProject error:', error);
+        logger.error('updateProject error:', { error: error.message });
         res.status(500).json({ message: 'Error updating data' });
     }
 };
@@ -123,7 +124,7 @@ exports.deleteProject = async (req, res) => {
             res.status(404).json({ message: 'Project not found' });
         }
     } catch (error) {
-        console.error('deleteProject error:', error);
+        logger.error('deleteProject error:', { error: error.message });
         res.status(500).json({ message: 'Error deleting data' });
     }
 };

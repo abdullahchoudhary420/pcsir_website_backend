@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // SCOPE AREAS - FULL CRUD
@@ -9,7 +10,7 @@ exports.getScopeAreas = async (req, res) => {
         const result = await db.query('SELECT * FROM scope_areas ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching scope areas:', error);
+        logger.error('Error fetching scope areas:', { error: error.message });
         res.status(500).json({ message: 'Error fetching scope areas' });
     }
 };
@@ -24,7 +25,7 @@ exports.createScopeArea = async (req, res) => {
         `, [icon, title, description, display_order || 0]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating scope area:', error);
+        logger.error('Error creating scope area:', { error: error.message });
         res.status(500).json({ message: 'Error creating scope area' });
     }
 };
@@ -48,7 +49,7 @@ exports.updateScopeArea = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating scope area:', error);
+        logger.error('Error updating scope area:', { error: error.message });
         res.status(500).json({ message: 'Error updating scope area' });
     }
 };
@@ -63,7 +64,7 @@ exports.deleteScopeArea = async (req, res) => {
         }
         res.json({ message: 'Scope area deleted successfully' });
     } catch (error) {
-        console.error('Error deleting scope area:', error);
+        logger.error('Error deleting scope area:', { error: error.message });
         res.status(500).json({ message: 'Error deleting scope area' });
     }
 };
@@ -82,7 +83,7 @@ exports.getTestingServices = async (req, res) => {
         }));
         res.json(services);
     } catch (error) {
-        console.error('Error fetching testing services:', error);
+        logger.error('Error fetching testing services:', { error: error.message });
         res.status(500).json({ message: 'Error fetching testing services' });
     }
 };
@@ -106,7 +107,7 @@ exports.createTestingService = async (req, res) => {
         };
         res.status(201).json(service);
     } catch (error) {
-        console.error('Error creating testing service:', error);
+        logger.error('Error creating testing service:', { error: error.message });
         res.status(500).json({ message: 'Error creating testing service' });
     }
 };
@@ -143,7 +144,7 @@ exports.updateTestingService = async (req, res) => {
         };
         res.json(service);
     } catch (error) {
-        console.error('Error updating testing service:', error);
+        logger.error('Error updating testing service:', { error: error.message });
         res.status(500).json({ message: 'Error updating testing service' });
     }
 };
@@ -158,7 +159,7 @@ exports.deleteTestingService = async (req, res) => {
         }
         res.json({ message: 'Testing service deleted successfully' });
     } catch (error) {
-        console.error('Error deleting testing service:', error);
+        logger.error('Error deleting testing service:', { error: error.message });
         res.status(500).json({ message: 'Error deleting testing service' });
     }
 };
@@ -181,7 +182,7 @@ exports.getTrainingPrograms = async (req, res) => {
 
         res.json(programs);
     } catch (error) {
-        console.error('Error fetching training programs:', error);
+        logger.error('Error fetching training programs:', { error: error.message });
         res.status(500).json({ message: 'Error fetching training programs' });
     }
 };
@@ -198,7 +199,7 @@ exports.createTrainingProgram = async (req, res) => {
 
         res.status(201).json({ ...result.rows[0], courses: [] });
     } catch (error) {
-        console.error('Error creating training program:', error);
+        logger.error('Error creating training program:', { error: error.message });
         res.status(500).json({ message: 'Error creating training program' });
     }
 };
@@ -226,7 +227,7 @@ exports.updateTrainingProgram = async (req, res) => {
         const coursesResult = await db.query('SELECT * FROM courses WHERE program_id = $1', [id]);
         res.json({ ...result.rows[0], courses: coursesResult.rows });
     } catch (error) {
-        console.error('Error updating training program:', error);
+        logger.error('Error updating training program:', { error: error.message });
         res.status(500).json({ message: 'Error updating training program' });
     }
 };
@@ -242,7 +243,7 @@ exports.deleteTrainingProgram = async (req, res) => {
         }
         res.json({ message: 'Training program deleted successfully' });
     } catch (error) {
-        console.error('Error deleting training program:', error);
+        logger.error('Error deleting training program:', { error: error.message });
         res.status(500).json({ message: 'Error deleting training program' });
     }
 };
@@ -267,7 +268,7 @@ exports.getCourses = async (req, res) => {
         const result = await db.query(query, params);
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching courses:', error);
+        logger.error('Error fetching courses:', { error: error.message });
         res.status(500).json({ message: 'Error fetching courses' });
     }
 };
@@ -284,7 +285,7 @@ exports.createCourse = async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating course:', error);
+        logger.error('Error creating course:', { error: error.message });
         res.status(500).json({ message: 'Error creating course' });
     }
 };
@@ -308,7 +309,7 @@ exports.updateCourse = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating course:', error);
+        logger.error('Error updating course:', { error: error.message });
         res.status(500).json({ message: 'Error updating course' });
     }
 };
@@ -323,7 +324,7 @@ exports.deleteCourse = async (req, res) => {
         }
         res.json({ message: 'Course deleted successfully' });
     } catch (error) {
-        console.error('Error deleting course:', error);
+        logger.error('Error deleting course:', { error: error.message });
         res.status(500).json({ message: 'Error deleting course' });
     }
 };

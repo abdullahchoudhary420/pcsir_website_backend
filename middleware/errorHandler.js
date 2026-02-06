@@ -2,8 +2,16 @@
  * Global Error Handler Middleware
  * Catches all errors and returns consistent error responses
  */
+const logger = require('../config/logger');
+
 const errorHandler = (err, req, res, next) => {
-    console.error('Error:', err);
+    logger.error('Request error', {
+        error: err.message,
+        stack: err.stack,
+        method: req.method,
+        url: req.originalUrl,
+        ip: req.ip
+    });
 
     // Multer file upload errors
     if (err.code === 'LIMIT_FILE_SIZE') {
@@ -61,14 +69,13 @@ const errorHandler = (err, req, res, next) => {
 
     // Default error response
     const statusCode = err.statusCode || 500;
-    // DEBUG: Force show error details even in production to diagnose deployment issues
     const message = err.message || 'Internal server error';
 
     res.status(statusCode).json({
         success: false,
         message,
-        stack: err.stack, // DEBUG: Always show stack
-        errorCode: err.code // DEBUG: Show DB error code if available
+        // Only show stack in development
+        ...(process.env.NODE_ENV !== 'production' && { stack: err.stack, errorCode: err.code })
     });
 };
 

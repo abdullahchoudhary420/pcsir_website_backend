@@ -1,11 +1,12 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getPCSIRActItems = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM pcsir_act_items ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching PCSIR Act items:', error);
+        logger.error('Error fetching PCSIR Act items:', { error: error.message });
         res.status(500).json({ message: 'Error fetching PCSIR Act items' });
     }
 };
@@ -20,7 +21,7 @@ exports.createPCSIRActItem = async (req, res) => {
         `, [title, content, document_url || null, display_order || 0]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating PCSIR Act item:', error);
+        logger.error('Error creating PCSIR Act item:', { error: error.message });
         res.status(500).json({ message: 'Error creating PCSIR Act item' });
     }
 };
@@ -44,7 +45,7 @@ exports.updatePCSIRActItem = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating PCSIR Act item:', error);
+        logger.error('Error updating PCSIR Act item:', { error: error.message });
         res.status(500).json({ message: 'Error updating PCSIR Act item' });
     }
 };
@@ -59,7 +60,7 @@ exports.deletePCSIRActItem = async (req, res) => {
         }
         res.json({ message: 'PCSIR Act item deleted successfully' });
     } catch (error) {
-        console.error('Error deleting PCSIR Act item:', error);
+        logger.error('Error deleting PCSIR Act item:', { error: error.message });
         res.status(500).json({ message: 'Error deleting PCSIR Act item' });
     }
 };

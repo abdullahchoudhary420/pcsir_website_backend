@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // NAVBAR CONTROLLERS - Full CRUD
@@ -9,7 +10,7 @@ exports.getNavbarItems = async (req, res) => {
         const result = await db.query('SELECT * FROM navbar ORDER BY order_index ASC');
         res.json({ data: result.rows });
     } catch (error) {
-        console.error('getNavbarItems error:', error);
+        logger.error('getNavbarItems error:', { error: error.message });
         res.status(500).json({
             success: false,
             message: error.message,
@@ -28,7 +29,7 @@ exports.addNavbarItem = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addNavbarItem error:', error);
+        logger.error('addNavbarItem error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving navbar item' });
     }
 };
@@ -48,7 +49,7 @@ exports.updateNavbarItem = async (req, res) => {
             res.status(404).json({ success: false, message: 'Navbar item not found' });
         }
     } catch (error) {
-        console.error('updateNavbarItem error:', error);
+        logger.error('updateNavbarItem error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating navbar item' });
     }
 };
@@ -64,7 +65,7 @@ exports.deleteNavbarItem = async (req, res) => {
             res.status(404).json({ success: false, message: 'Navbar item not found' });
         }
     } catch (error) {
-        console.error('deleteNavbarItem error:', error);
+        logger.error('deleteNavbarItem error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting navbar item' });
     }
 };

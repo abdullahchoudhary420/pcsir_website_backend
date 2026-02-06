@@ -1,6 +1,7 @@
 const db = require('../config/db');
 const nodemailer = require('nodemailer');
 const { body, validationResult } = require('express-validator');
+const logger = require('../config/logger');
 
 /**
  * Validation rules for contact form submission
@@ -57,7 +58,7 @@ exports.getContactInfo = async (req, res) => {
         `);
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching contact info:', error);
+        logger.error('Error fetching contact info', { error: error.message });
         res.status(500).json({ message: 'Error fetching contact info' });
     }
 };
@@ -72,7 +73,7 @@ exports.getPrimaryContact = async (req, res) => {
         `);
         res.json(result.rows[0] || null);
     } catch (error) {
-        console.error('Error fetching primary contact:', error);
+        logger.error('Error fetching primary contact', { error: error.message });
         res.status(500).json({ message: 'Error fetching primary contact' });
     }
 };
@@ -96,7 +97,7 @@ exports.addContactInfo = async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error adding contact info:', error);
+        logger.error('Error adding contact info', { error: error.message });
         res.status(500).json({ message: 'Error adding contact info' });
     }
 };
@@ -133,7 +134,7 @@ exports.updateContactInfo = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating contact info:', error);
+        logger.error('Error updating contact info', { error: error.message });
         res.status(500).json({ message: 'Error updating contact info' });
     }
 };
@@ -150,7 +151,7 @@ exports.deleteContactInfo = async (req, res) => {
 
         res.json({ message: 'Contact location deleted successfully' });
     } catch (error) {
-        console.error('Error deleting contact info:', error);
+        logger.error('Error deleting contact info', { error: error.message });
         res.status(500).json({ message: 'Error deleting contact info' });
     }
 };
@@ -207,9 +208,9 @@ exports.submitContactForm = async (req, res) => {
                     `,
                 });
 
-                console.log('Contact form email sent successfully');
+                logger.info('Contact form email sent successfully');
             } catch (emailError) {
-                console.error('Error sending email:', emailError);
+                logger.error('Error sending email', { error: emailError.message });
                 // Don't fail the request if email fails
             }
         }
@@ -220,7 +221,7 @@ exports.submitContactForm = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error submitting contact form:', error);
+        logger.error('Error submitting contact form', { error: error.message });
         res.status(500).json({ message: 'Error submitting contact form. Please try again.' });
     }
 };
@@ -272,7 +273,7 @@ exports.getContactSubmissions = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error fetching contact submissions:', error);
+        logger.error('Error fetching contact submissions', { error: error.message });
         res.status(500).json({ message: 'Error fetching contact submissions' });
     }
 };
@@ -300,7 +301,7 @@ exports.updateSubmissionStatus = async (req, res) => {
 
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating submission status:', error);
+        logger.error('Error updating submission status', { error: error.message });
         res.status(500).json({ message: 'Error updating submission status' });
     }
 };
@@ -317,7 +318,7 @@ exports.deleteSubmission = async (req, res) => {
 
         res.json({ message: 'Submission deleted successfully' });
     } catch (error) {
-        console.error('Error deleting submission:', error);
+        logger.error('Error deleting submission', { error: error.message });
         res.status(500).json({ message: 'Error deleting submission' });
     }
 };

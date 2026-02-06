@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getHomeData = async (req, res) => {
     try {
@@ -54,7 +55,7 @@ exports.getHomeData = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('getHomeData error:', error);
+        logger.error('getHomeData error:', { error: error.message });
         res.status(500).json({ message: 'Failed to load home page data' });
     }
 };

@@ -1,4 +1,5 @@
 const upload = require('../middleware/upload');
+const logger = require('../config/logger');
 const path = require('path');
 
 // Upload image endpoint
@@ -18,7 +19,7 @@ exports.uploadImage = (req, res) => {
             size: req.file.size
         });
     } catch (error) {
-        console.error('Upload error:', error);
+        logger.error('Upload error:', { error: error.message });
         res.status(500).json({ message: 'Error uploading file', error: error.message });
     }
 };

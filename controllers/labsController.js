@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // ============================================================================
 // LABS CONTROLLERS - Full CRUD
@@ -44,7 +45,7 @@ exports.getLabs = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('getLabs error:', error);
+        logger.error('getLabs error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error reading labs' });
     }
 };
@@ -58,7 +59,7 @@ exports.addLab = async (req, res) => {
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('addLab error:', error);
+        logger.error('addLab error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error saving lab' });
     }
 };
@@ -78,7 +79,7 @@ exports.updateLab = async (req, res) => {
             res.status(404).json({ success: false, message: 'Lab not found' });
         }
     } catch (error) {
-        console.error('updateLab error:', error);
+        logger.error('updateLab error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error updating lab' });
     }
 };
@@ -94,7 +95,7 @@ exports.deleteLab = async (req, res) => {
             res.status(404).json({ success: false, message: 'Lab not found' });
         }
     } catch (error) {
-        console.error('deleteLab error:', error);
+        logger.error('deleteLab error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting lab' });
     }
 };

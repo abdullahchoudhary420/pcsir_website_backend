@@ -1,6 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const { Pool } = require('pg');
+const logger = require('./logger');
 
 const pool = new Pool({
     user: process.env.DB_USERNAME,
@@ -11,23 +12,24 @@ const pool = new Pool({
 });
 
 pool.on('connect', () => {
-    console.log('Connected to the PostgreSQL database');
-    console.log(`  Host: ${process.env.DB_HOST}`);
-    console.log(`  Database: ${process.env.DB_DATABASE}`);
-    console.log(`  User: ${process.env.DB_USERNAME}`);
+    logger.info('Connected to the PostgreSQL database', {
+        host: process.env.DB_HOST,
+        database: process.env.DB_DATABASE,
+        user: process.env.DB_USERNAME
+    });
 });
 
 // Test connection immediately
 pool.query('SELECT NOW()', (err, res) => {
     if (err) {
-        console.error('Database connection error:', err);
+        logger.error('Database connection error', { error: err.message });
     } else {
-        console.log('Database connection verified at:', res.rows[0].now);
+        logger.info('Database connection verified', { timestamp: res.rows[0].now });
     }
 });
 
 pool.on('error', (err) => {
-    console.error('Unexpected error on idle client', err);
+    logger.error('Unexpected error on idle client', { error: err.message, stack: err.stack });
     process.exit(-1);
 });
 

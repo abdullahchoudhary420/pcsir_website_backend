@@ -1,11 +1,12 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getSeniorManagement = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM senior_management ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching Senior Management:', error);
+        logger.error('Error fetching Senior Management:', { error: error.message });
         res.status(500).json({ message: 'Error fetching Senior Management' });
     }
 };
@@ -29,7 +30,7 @@ exports.createSeniorManagementMember = async (req, res) => {
         `, [name, designation, bio || null, image_url || null, email || null, phone || null, display_order || 0, is_chairman || false]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating Senior Management member:', error);
+        logger.error('Error creating Senior Management member:', { error: error.message });
         res.status(500).json({ message: 'Error creating Senior Management member' });
     }
 };
@@ -66,7 +67,7 @@ exports.updateSeniorManagementMember = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating Senior Management member:', error);
+        logger.error('Error updating Senior Management member:', { error: error.message });
         res.status(500).json({ message: 'Error updating Senior Management member' });
     }
 };
@@ -81,7 +82,7 @@ exports.deleteSeniorManagementMember = async (req, res) => {
         }
         res.json({ message: 'Senior Management member deleted successfully' });
     } catch (error) {
-        console.error('Error deleting Senior Management member:', error);
+        logger.error('Error deleting Senior Management member:', { error: error.message });
         res.status(500).json({ message: 'Error deleting Senior Management member' });
     }
 };

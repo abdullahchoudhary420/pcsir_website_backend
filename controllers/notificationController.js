@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // Get all notifications
 exports.getAllNotifications = async (req, res) => {
@@ -6,7 +7,7 @@ exports.getAllNotifications = async (req, res) => {
         const result = await db.query('SELECT * FROM notifications WHERE is_active = true ORDER BY date DESC');
         res.json(result.rows);
     } catch (error) {
-        console.error('getAllNotifications error:', error);
+        logger.error('getAllNotifications error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error fetching notifications' });
     }
 };
@@ -28,7 +29,7 @@ exports.createNotification = async (req, res) => {
 
         res.status(201).json({ success: true, notification: result.rows[0] });
     } catch (error) {
-        console.error('createNotification error:', error);
+        logger.error('createNotification error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error creating notification' });
     }
 };
@@ -45,7 +46,7 @@ exports.deleteNotification = async (req, res) => {
 
         res.json({ success: true, message: 'Notification deleted successfully' });
     } catch (error) {
-        console.error('deleteNotification error:', error);
+        logger.error('deleteNotification error:', { error: error.message });
         res.status(500).json({ success: false, message: 'Error deleting notification' });
     }
 };

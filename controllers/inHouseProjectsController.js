@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const logger = require('../config/logger');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,7 +9,7 @@ const getProjects = async (req, res) => {
         const result = await pool.query('SELECT * FROM in_house_projects ORDER BY created_at ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching in-house projects:', error);
+        logger.error('Error fetching in-house projects:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -38,7 +39,7 @@ const createProject = async (req, res) => {
 
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating in-house project:', error);
+        logger.error('Error creating in-house project:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -68,7 +69,7 @@ const deleteProject = async (req, res) => {
 
         res.json({ message: 'Project deleted successfully' });
     } catch (error) {
-        console.error('Error deleting in-house project:', error);
+        logger.error('Error deleting in-house project:', { error: error.message });
         res.status(500).json({ message: 'Server error' });
     }
 };

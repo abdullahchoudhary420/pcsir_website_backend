@@ -1,11 +1,12 @@
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 exports.getSIFCItems = async (req, res) => {
     try {
         const result = await db.query('SELECT * FROM sifc_items ORDER BY display_order ASC, id ASC');
         res.json(result.rows);
     } catch (error) {
-        console.error('Error fetching SIFC items:', error);
+        logger.error('Error fetching SIFC items:', { error: error.message });
         res.status(500).json({ message: 'Error fetching SIFC items' });
     }
 };
@@ -20,7 +21,7 @@ exports.createSIFCItem = async (req, res) => {
         `, [title, description, category || 'focus_area', display_order || 0]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
-        console.error('Error creating SIFC item:', error);
+        logger.error('Error creating SIFC item:', { error: error.message });
         res.status(500).json({ message: 'Error creating SIFC item' });
     }
 };
@@ -44,7 +45,7 @@ exports.updateSIFCItem = async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating SIFC item:', error);
+        logger.error('Error updating SIFC item:', { error: error.message });
         res.status(500).json({ message: 'Error updating SIFC item' });
     }
 };
@@ -59,7 +60,7 @@ exports.deleteSIFCItem = async (req, res) => {
         }
         res.json({ message: 'SIFC item deleted successfully' });
     } catch (error) {
-        console.error('Error deleting SIFC item:', error);
+        logger.error('Error deleting SIFC item:', { error: error.message });
         res.status(500).json({ message: 'Error deleting SIFC item' });
     }
 };
