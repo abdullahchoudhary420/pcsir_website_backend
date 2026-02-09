@@ -21,7 +21,7 @@ RUN --mount=type=ssh npm install --legacy-peer-deps
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 5021
+EXPOSE 5001
 
 # Set the command to run your application
 CMD ["npm", "start"]
