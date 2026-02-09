@@ -17,6 +17,8 @@ COPY package*.json ./
 # Install dependencies
 RUN --mount=type=ssh npm install --legacy-peer-deps 
 
+COPY .env.dev .env
+
 # Copy the rest of the application files
 COPY . .
 
@@ -25,4 +27,3 @@ EXPOSE 5001
 
 # Set the command to run your application
 CMD ["npm", "start"]
-
