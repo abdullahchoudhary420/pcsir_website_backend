@@ -37,10 +37,11 @@ app.use(helmet({
 
 // CORS Configuration - Load origins from environment
 const allowedOrigins = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:4021',
+    'http://127.0.0.1:4021',
     'http://10.3.3.86:4021',
     'http://10.10.20.27:4021',
+    'http://10.10.20.29:4021',
     ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean)
 ];
 
