@@ -16,6 +16,7 @@ const labsController = require('../controllers/labsController');
 const uploadController = require('../controllers/uploadController');
 const faqController = require('../controllers/faqController');
 const feedbackController = require('../controllers/feedbackController');
+const pollController = require('../controllers/pollController');
 
 // Middleware
 const upload = require('../middleware/upload');
@@ -44,6 +45,17 @@ router.post('/feedback', feedbackController.feedbackValidation, feedbackControll
 router.get('/feedback', feedbackController.getFeedbackSubmissions);
 router.put('/feedback/:id/status', authenticateToken, auditMiddleware(ACTIONS.UPDATE, 'feedback'), feedbackController.updateFeedbackStatus);
 router.delete('/feedback/:id', authenticateToken, auditMiddleware(ACTIONS.DELETE, 'feedback'), feedbackController.deleteFeedback);
+
+// =============================================================================
+// POLL ROUTES
+// =============================================================================
+router.get('/polls/active', pollController.getActivePoll);
+router.post('/polls/:id/vote', pollController.vote);
+router.get('/polls/:id/results', pollController.getResults);
+router.get('/polls', authenticateToken, pollController.getAllPolls);
+router.post('/polls', authenticateToken, auditMiddleware(ACTIONS.CREATE, 'polls'), pollController.pollValidation, pollController.createPoll);
+router.put('/polls/:id', authenticateToken, auditMiddleware(ACTIONS.UPDATE, 'polls'), pollController.updatePoll);
+router.delete('/polls/:id', authenticateToken, auditMiddleware(ACTIONS.DELETE, 'polls'), pollController.deletePoll);
 
 // =============================================================================
 // PROJECT ROUTES (using legacy contentController until fully migrated)

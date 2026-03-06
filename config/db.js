@@ -3,6 +3,12 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const { Pool } = require('pg');
 const logger = require('./logger');
 
+console.log(process.env.DB_USERNAME);
+console.log(process.env.DB_PASSWORD);
+console.log(process.env.DB_HOST);
+console.log(process.env.DB_PORT);
+console.log(process.env.DB_DATABASE)
+
 const pool = new Pool({
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,

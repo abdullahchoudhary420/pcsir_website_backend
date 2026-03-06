@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/abdullah/Desktop/pcsir-official-website-backend/logs/.763c282e686684bae0db772cee23cf0bede9cf42-audit.json",
+    "files": [
+        {
+            "date": 1770898836662,
+            "name": "/Users/abdullah/Desktop/pcsir-official-website-backend/logs/app-2026-02-12.log",
+            "hash": "286850326b9e025f15b46dc6b3fd42779adcfe10548c96e3e77eecfa422f1786"
+        }
+    ],
+    "hashType": "sha256"
+}

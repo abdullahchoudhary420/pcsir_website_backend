@@ -1,0 +1,16 @@
+{"level":"info","message":"Server is running on port 5001","service":"pcsir-backend","timestamp":"2026-02-12T12:20:36.773Z"}
+{"level":"info","message":"Environment: production","service":"pcsir-backend","timestamp":"2026-02-12T12:20:36.774Z"}
+{"level":"info","message":"CORS Origins: http://localhost:3000, http://127.0.0.1:3000, http://10.3.3.86:4021, http://10.10.20.27:4021, http://10.3.3.86:4021","service":"pcsir-backend","timestamp":"2026-02-12T12:20:36.774Z"}
+{"error":"connect ETIMEDOUT 10.3.3.85:5432","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:21:51.778Z"}
+{"level":"info","message":"Server is running on port 5001","service":"pcsir-backend","timestamp":"2026-02-12T12:22:50.265Z"}
+{"level":"info","message":"Environment: production","service":"pcsir-backend","timestamp":"2026-02-12T12:22:50.266Z"}
+{"level":"info","message":"CORS Origins: http://localhost:3000, http://127.0.0.1:3000, http://10.3.3.86:4021, http://10.10.20.27:4021, http://localhost:3000","service":"pcsir-backend","timestamp":"2026-02-12T12:22:50.266Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:22:50.274Z"}
+{"level":"info","message":"Server is running on port 5001","service":"pcsir-backend","timestamp":"2026-02-12T12:23:21.228Z"}
+{"level":"info","message":"Environment: production","service":"pcsir-backend","timestamp":"2026-02-12T12:23:21.229Z"}
+{"level":"info","message":"CORS Origins: http://localhost:3000, http://127.0.0.1:3000, http://10.3.3.86:4021, http://10.10.20.27:4021, http://localhost:3000","service":"pcsir-backend","timestamp":"2026-02-12T12:23:21.229Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:23:21.237Z"}
+{"level":"info","message":"Server is running on port 5001","service":"pcsir-backend","timestamp":"2026-02-12T12:24:01.364Z"}
+{"level":"info","message":"Environment: production","service":"pcsir-backend","timestamp":"2026-02-12T12:24:01.364Z"}
+{"level":"info","message":"CORS Origins: http://localhost:3000, http://127.0.0.1:3000, http://10.3.3.86:4021, http://10.10.20.27:4021, http://localhost:3000","service":"pcsir-backend","timestamp":"2026-02-12T12:24:01.364Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:24:01.373Z"}

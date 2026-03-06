@@ -1,0 +1,4 @@
+{"error":"connect ETIMEDOUT 10.3.3.85:5432","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:21:51.778Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:22:50.274Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:23:21.237Z"}
+{"error":"password authentication failed for user \"postgres\"","level":"error","message":"Database connection error","service":"pcsir-backend","timestamp":"2026-02-12T12:24:01.373Z"}
