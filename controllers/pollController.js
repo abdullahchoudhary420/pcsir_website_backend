@@ -31,10 +31,12 @@ exports.pollValidation = [
 exports.getActivePoll = async (req, res) => {
     try {
         const pollResult = await db.query(
-            'SELECT id, question, description FROM polls WHERE is_active = true ORDER BY created_at DESC LIMIT 1'
+            'SELECT id, question, description, expires_at FROM polls WHERE is_active = true AND (expires_at IS NULL OR expires_at > CURRENT_TIMESTAMP) ORDER BY created_at DESC LIMIT 1'
         );
 
         if (pollResult.rows.length === 0) {
+            // Lazy deactivation for active polls that have expired
+            await db.query('UPDATE polls SET is_active = false WHERE is_active = true AND expires_at <= CURRENT_TIMESTAMP');
             return res.json(null);
         }
 
@@ -129,6 +131,9 @@ exports.getResults = async (req, res) => {
  */
 exports.getAllPolls = async (req, res) => {
     try {
+        // Lazy deactivation check before returning all polls
+        await db.query('UPDATE polls SET is_active = false WHERE is_active = true AND expires_at <= CURRENT_TIMESTAMP');
+
         const result = await db.query(
             `SELECT p.*, 
              (SELECT COUNT(*) FROM poll_votes WHERE poll_id = p.id) as total_votes
@@ -151,11 +156,14 @@ exports.createPoll = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { question, description, options, is_active } = req.body;
+    const { question, description, options, is_active, expires_at } = req.body;
     const createdBy = req.user.id;
 
-    const client = await db.getClient();
+    logger.info('Creating poll:', { question, is_active, expires_at });
+
+    let client;
     try {
+        client = await db.getClient();
         await client.query('BEGIN');
 
         // If this poll is set to active, deactivate all other polls first
@@ -165,8 +173,8 @@ exports.createPoll = async (req, res) => {
 
         // Create poll
         const pollResult = await client.query(
-            'INSERT INTO polls (question, description, is_active, created_by) VALUES ($1, $2, $3, $4) RETURNING id',
-            [question, description, is_active || false, createdBy]
+            'INSERT INTO polls (question, description, is_active, created_by, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING id',
+            [question, description, is_active || false, createdBy, expires_at || null]
         );
         const pollId = pollResult.rows[0].id;
 
@@ -181,11 +189,11 @@ exports.createPoll = async (req, res) => {
         await client.query('COMMIT');
         res.status(201).json({ id: pollId, message: 'Poll created successfully' });
     } catch (error) {
-        await client.query('ROLLBACK');
-        logger.error('Error creating poll:', { error: error.message });
-        res.status(500).json({ error: 'Failed to create poll' });
+        if (client) await client.query('ROLLBACK');
+        logger.error('Error creating poll:', { error: error.message, stack: error.stack });
+        res.status(500).json({ error: 'Failed to create poll', details: error.message });
     } finally {
-        client.release();
+        if (client) client.release();
     }
 };
 
@@ -194,34 +202,61 @@ exports.createPoll = async (req, res) => {
  */
 exports.updatePoll = async (req, res) => {
     const { id } = req.params;
-    const { question, description, is_active } = req.body;
+    const { question, description, is_active, expires_at, options } = req.body;
 
-    const client = await db.getClient();
+    logger.info('Updating poll request:', { id, is_active, expires_at, hasOptions: !!options });
+
+    let client;
     try {
+        client = await db.getClient();
         await client.query('BEGIN');
 
-        if (is_active) {
+        if (is_active === true) {
             await client.query('UPDATE polls SET is_active = false WHERE id != $1 AND is_active = true', [id]);
         }
 
-        const result = await client.query(
-            'UPDATE polls SET question = $1, description = $2, is_active = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $4',
-            [question, description, is_active, id]
-        );
-
-        if (result.rowCount === 0) {
+        // Get current values to support partial updates
+        const currentResult = await client.query('SELECT question, description, is_active, expires_at FROM polls WHERE id = $1', [id]);
+        if (currentResult.rows.length === 0) {
             await client.query('ROLLBACK');
             return res.status(404).json({ error: 'Poll not found' });
+        }
+        const currentPoll = currentResult.rows[0];
+
+        const finalQuestion = question !== undefined ? question : currentPoll.question;
+        const finalDescription = description !== undefined ? description : currentPoll.description;
+        const finalIsActive = is_active !== undefined ? is_active : currentPoll.is_active;
+        const finalExpiresAt = (expires_at !== undefined && expires_at !== '') ? expires_at : currentPoll.expires_at;
+
+        logger.info('Final update values:', { finalQuestion, finalIsActive, finalExpiresAt });
+
+        const result = await client.query(
+            'UPDATE polls SET question = $1, description = $2, is_active = $3, expires_at = $4, updated_at = CURRENT_TIMESTAMP WHERE id = $5',
+            [finalQuestion, finalDescription, finalIsActive, finalExpiresAt, id]
+        );
+
+        // Update options if provided
+        if (options && Array.isArray(options)) {
+            // Delete existing options
+            await client.query('DELETE FROM poll_options WHERE poll_id = $1', [id]);
+
+            // Insert new options
+            for (let i = 0; i < options.length; i++) {
+                await client.query(
+                    'INSERT INTO poll_options (poll_id, option_text, display_order) VALUES ($1, $2, $3)',
+                    [id, options[i], i]
+                );
+            }
         }
 
         await client.query('COMMIT');
         res.json({ message: 'Poll updated successfully' });
     } catch (error) {
-        await client.query('ROLLBACK');
-        logger.error('Error updating poll:', { error: error.message, pollId: id });
-        res.status(500).json({ error: 'Failed to update poll' });
+        if (client) await client.query('ROLLBACK');
+        logger.error('Error updating poll:', { error: error.message, pollId: id, stack: error.stack });
+        res.status(500).json({ error: 'Failed to update poll', details: error.message });
     } finally {
-        client.release();
+        if (client) client.release();
     }
 };
 
@@ -239,5 +274,27 @@ exports.deletePoll = async (req, res) => {
     } catch (error) {
         logger.error('Error deleting poll:', { error: error.message, pollId: id });
         res.status(500).json({ error: 'Failed to delete poll' });
+    }
+};
+
+/**
+ * Get a single poll by ID (Admin)
+ */
+exports.getPollById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pollResult = await db.query('SELECT * FROM polls WHERE id = ', [id]);
+        if (pollResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        
+        const poll = pollResult.rows[0];
+        const optionsResult = await db.query('SELECT * FROM poll_options WHERE poll_id =  ORDER BY display_order', [id]);
+        poll.options = optionsResult.rows;
+        
+        res.json(poll);
+    } catch (error) {
+        logger.error('Error fetching poll by ID:', { id, error: error.message });
+        res.status(500).json({ error: 'Failed to fetch poll details' });
     }
 };

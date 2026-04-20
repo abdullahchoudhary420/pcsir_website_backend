@@ -52,6 +52,7 @@ router.delete('/feedback/:id', authenticateToken, auditMiddleware(ACTIONS.DELETE
 router.get('/polls/active', pollController.getActivePoll);
 router.post('/polls/:id/vote', pollController.vote);
 router.get('/polls/:id/results', pollController.getResults);
+router.get('/polls/:id', authenticateToken, pollController.getPollById);
 router.get('/polls', authenticateToken, pollController.getAllPolls);
 router.post('/polls', authenticateToken, auditMiddleware(ACTIONS.CREATE, 'polls'), pollController.pollValidation, pollController.createPoll);
 router.put('/polls/:id', authenticateToken, auditMiddleware(ACTIONS.UPDATE, 'polls'), pollController.updatePoll);
